@@ -13,12 +13,18 @@
     <title>Fancy Todo</title>
   </head>
   <body>
+    <div class="container mt-3" id="logout">
+      <div class="m-auto">
+        <button type="button" class="btn btn-dark" id="logout-btn">Logout</button>
+      </div>
+    </div>
+
     <!-- login form -->
-    <div class="container mt-5">
+    <div class="container mt-5" id="login-container">
       <div class="col-4 m-auto">
         <div class="card shadow p-3 mb-5 bg-body rounded">
           <div class="card-body">
-            <form>
+            <form id="login-form">
               <div class="mb-3">
                 <label for="email" class="form-label">Email address</label>
                 <input type="email" class="form-control" id="email" aria-describedby="emailHelp" />
@@ -28,8 +34,43 @@
                 <label for="password" class="form-label">Password</label>
                 <input type="password" class="form-control" id="password" />
               </div>
-              <button type="submit" class="btn btn-primary">Submit</button>
+              <button type="submit" class="btn btn-primary">Login</button>
+              <button type="button" class="btn btn-secondary" id="reg-btn">Register</button>
             </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- register form -->
+    <div class="container mt-5" id="reg-container">
+      <div class="col-4 m-auto">
+        <div class="card shadow p-3 mb-5 bg-body rounded">
+          <div class="card-body">
+            <form id="reg-form">
+              <div class="mb-3">
+                <label for="new-email" class="form-label">Email address</label>
+                <input type="email" class="form-control" id="new-email" aria-describedby="emailHelp" />
+                <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+              </div>
+              <div class="mb-3">
+                <label for="new-password" class="form-label">Password</label>
+                <input type="password" class="form-control" id="new-password" />
+              </div>
+              <button type="Submit" class="btn btn-primary">Register</button>
+              <button type="button" class="btn btn-dark" id="cancel-btn">Cancel</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- todos page -->
+    <div class="container mt-5" id="todos-container">
+      <div class="col-8 m-auto">
+        <div class="card shadow p-3 mb-5 bg-body rounded">
+          <div class="card-body">
+            <div class="list-group" id="todos"></div>
           </div>
         </div>
       </div>
@@ -40,5 +81,6 @@
       integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
       crossorigin="anonymous"
     ></script>
+    <script src="script.js"></script>
   </body>
 </html>
