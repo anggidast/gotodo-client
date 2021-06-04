@@ -72,7 +72,35 @@ $(document).ready(function () {
     const id = $(this).data().id;
     deleteTodo(id);
   });
+
+  $('#todos').on('change', '.checkbox :checkbox', function () {
+    const id = $(this).data().id;
+    if (this.checked) {
+      statusChange(id, 'done');
+    } else {
+      statusChange(id, 'undone');
+    }
+  });
 });
+
+function statusChange(id, status) {
+  $.ajax({
+    type: 'PATCH',
+    url: baseURL + '/todos/' + id,
+    headers: {
+      access_token: localStorage.getItem('access_token'),
+    },
+    data: {
+      status,
+    },
+  })
+    .done((res) => {
+      getTodos();
+    })
+    .fail((err) => {
+      console.log(err);
+    });
+}
 
 function auth() {
   if (localStorage.getItem('access_token')) {
@@ -105,17 +133,23 @@ function getTodos() {
     .done(({ data }) => {
       $('#todos').empty();
       data.forEach((el) => {
+        const status = el.status == 'done' ? 'checked' : '';
+        const muted = el.status == 'done' ? 'text-muted' : '';
+        const grey = el.status == 'done' ? 'bg-secondary' : '';
         $('#todos').append(
-          `<div class="list-group-item">
-            <input class="form-check-input me-1" type="checkbox" value="" />
-            <div class="d-flex w-100 justify-content-between">
-              <h5 class="mb-1">${el.title}</h5>
-              <small class="text-muted">3 days ago</small>
-            </div>
-            <p class="mb-1">${el.description}</p>
-            <small>Due date: ${new Date(el.due_date).toISOString().split`T`[0]}</small><br />
-            <button type="button" class="btn btn-sm btn-primary edit-btn" data-id="${el.id}">Edit</button>
-            <button type="button" class="btn btn-sm btn-danger delete-btn" data-id="${el.id}">Delete</button>
+          `<div class="list-group-item ${grey}">
+            <form class="checkbox">
+              <input data-id="${el.id}" class="form-check-input me-1" type="checkbox" ${status} value="" />
+              <label>${el.status}</label>
+            </form>
+              <div class="d-flex w-100 justify-content-between">
+                <h5 class="mb-1">${el.title}</h5>
+                <small class="text-muted">3 days ago</small>
+              </div>
+              <p class="mb-1">${el.description}</p>
+              <small>Due date: ${new Date(el.due_date).toISOString().split`T`[0]}</small><br />
+              <button type="button" class="btn btn-sm btn-primary edit-btn" data-id="${el.id}">Edit</button>
+              <button type="button" class="btn btn-sm btn-danger delete-btn" data-id="${el.id}">Delete</button>
           </div>`
         );
       });
