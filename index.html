@@ -65,11 +65,64 @@
       </div>
     </div>
 
+    <!-- add todo form -->
+    <div class="container mt-5" id="add-container">
+      <div class="col-4 m-auto">
+        <div class="card shadow p-3 mb-5 bg-body rounded">
+          <div class="card-body">
+            <form id="add-form">
+              <div class="mb-3">
+                <label for="title" class="form-label">Title</label>
+                <input type="text" class="form-control" id="title" />
+              </div>
+              <div class="mb-3">
+                <label for="description" class="form-label">Description</label>
+                <input type="text" class="form-control" id="description" />
+              </div>
+              <div class="mb-3">
+                <label for="due_date" class="form-label">Due Date</label>
+                <input type="date" class="form-control" id="due_date" />
+              </div>
+              <button type="Submit" class="btn btn-primary">Submit</button>
+              <button type="button" class="btn btn-dark" id="cancel-add-btn">Cancel</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- edit todo form -->
+    <div class="container mt-5" id="edit-container">
+      <div class="col-4 m-auto">
+        <div class="card shadow p-3 mb-5 bg-body rounded">
+          <div class="card-body">
+            <form id="edit-form">
+              <div class="mb-3">
+                <label for="title-edit" class="form-label">Title</label>
+                <input type="text" class="form-control" id="title-edit" />
+              </div>
+              <div class="mb-3">
+                <label for="description-edit" class="form-label">Description</label>
+                <input type="text" class="form-control" id="description-edit" />
+              </div>
+              <div class="mb-3">
+                <label for="due_date-edit" class="form-label">Due Date</label>
+                <input type="date" class="form-control" id="due_date-edit" />
+              </div>
+              <button type="Submit" id="submit-edit-btn" data-id="" class="btn btn-primary">Edit</button>
+              <button type="button" class="btn btn-dark" id="cancel-edit-btn">Cancel</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <!-- todos page -->
     <div class="container mt-5" id="todos-container">
       <div class="col-8 m-auto">
         <div class="card shadow p-3 mb-5 bg-body rounded">
           <div class="card-body">
+            <button type="button" class="btn btn-success mb-2" id="add-btn">Add Todo</button>
             <div class="list-group" id="todos"></div>
           </div>
         </div>
