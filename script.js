@@ -29,6 +29,7 @@ $(document).ready(function () {
   $('#logout-btn').click(function (e) {
     e.preventDefault();
     localStorage.removeItem('access_token');
+    signOut();
     auth();
     $('#login-form')[0].reset();
   });
@@ -148,6 +149,76 @@ function auth() {
     $('#edit-container').hide();
     $('#logout').hide();
   }
+
+  // FB.getLoginStatus(function (response) {
+  //   statusChangeCallback(response);
+  // });
+}
+
+// function checkLoginState() {
+//   FB.getLoginStatus(function (response) {
+//     console.log(response);
+//     statusChangeCallback(response);
+//   });
+// }
+
+function onSignIn(googleUser) {
+  const id_token = googleUser.getAuthResponse().id_token;
+  $.ajax({
+    type: 'POST',
+    url: baseURL + '/users/google-login',
+    data: {
+      token: id_token,
+    },
+  })
+    .done((res) => {
+      localStorage.setItem('access_token', res.access_token);
+      auth();
+    })
+    .fail((err) => console.log(err));
+}
+
+function signOut() {
+  var auth2 = gapi.auth2.getAuthInstance();
+  auth2.signOut().then(function () {
+    console.log('User signed out.');
+  });
+}
+
+function login() {
+  $.ajax({
+    type: 'POST',
+    url: baseURL + '/users/login',
+    data: {
+      email: $('#email').val(),
+      password: $('#password').val(),
+    },
+  })
+    .done((res) => {
+      localStorage.setItem('access_token', res.access_token);
+      auth();
+    })
+    .fail((err) => {
+      $('#error-alert').show().text(err.responseJSON.message);
+    });
+}
+
+function register() {
+  $.ajax({
+    type: 'POST',
+    url: baseURL + '/users/register',
+    data: {
+      email: $('#new-email').val(),
+      password: $('#new-password').val(),
+    },
+  })
+    .done((res) => {
+      auth();
+      $('#success-alert').show().text('Register success\nYou can login now!');
+    })
+    .fail((err) => {
+      $('#reg-alert').show().text(err.responseJSON.message);
+    });
 }
 
 function getTodos() {
@@ -198,42 +269,6 @@ function getTodos() {
 function dayCount(due_date, today) {
   const oneDay = 24 * 60 * 60 * 1000;
   return Math.round(Math.abs((due_date - today) / oneDay));
-}
-
-function login() {
-  $.ajax({
-    type: 'POST',
-    url: baseURL + '/users/login',
-    data: {
-      email: $('#email').val(),
-      password: $('#password').val(),
-    },
-  })
-    .done((res) => {
-      localStorage.setItem('access_token', res.access_token);
-      auth();
-    })
-    .fail((err) => {
-      $('#error-alert').show().text(err.responseJSON.message);
-    });
-}
-
-function register() {
-  $.ajax({
-    type: 'POST',
-    url: baseURL + '/users/register',
-    data: {
-      email: $('#new-email').val(),
-      password: $('#new-password').val(),
-    },
-  })
-    .done((res) => {
-      auth();
-      $('#success-alert').show().text('Register success\nYou can login now!');
-    })
-    .fail((err) => {
-      $('#reg-alert').show().text(err.responseJSON.message);
-    });
 }
 
 function addTodo() {

@@ -2,8 +2,8 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="google-signin-client_id" content="1051183172531-s8ohs07adecklgfcsdsapel94ifgratg.apps.googleusercontent.com" />
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css"
       rel="stylesheet"
@@ -12,7 +12,8 @@
     />
     <title>Fancy Todo</title>
   </head>
-  <body>
+  <body class="bg-dark">
+    <!-- <body> -->
     <div class="container mt-3" id="logout">
       <div class="m-auto">
         <button type="button" class="btn btn-dark" id="logout-btn">Logout</button>
@@ -20,36 +21,46 @@
     </div>
 
     <!-- login form -->
-    <div class="container mt-5" id="login-container">
-      <div class="col-4 m-auto">
-        <div class="alert alert-success text-center" id="success-alert" role="alert"></div>
-        <div class="alert alert-danger text-center" id="error-alert" role="alert"></div>
-        <div class="card shadow p-3 mb-5 bg-body rounded">
-          <div class="card-body">
-            <h3 class="card-title">Login</h3>
-            <form id="login-form">
-              <div class="mb-3">
-                <label for="email" class="form-label">Email address</label>
-                <input type="email" class="form-control" id="email" aria-describedby="emailHelp" required />
-                <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
-              </div>
-              <div class="mb-3">
-                <label for="password" class="form-label">Password</label>
-                <input type="password" class="form-control" id="password" required />
-              </div>
-              <button type="submit" class="btn btn-primary">Login</button>
-              <button type="button" class="btn btn-secondary" id="reg-btn">Register</button>
-            </form>
+    <div class="container position-absolute top-50 start-50 translate-middle" id="login-container">
+      <!-- <div class="col-12 m-auto"> -->
+      <div class="alert alert-success text-center" id="success-alert" role="alert"></div>
+      <div class="alert alert-danger text-center" id="error-alert" role="alert"></div>
+      <div class="card bg-light rounded">
+        <div class="row g-0">
+          <div class="col-md-4">
+            <img src="./img/login.jpg" class="card-img rounded" style="filter: opacity(80%)" alt="..." />
+          </div>
+          <div class="col-md-4">
+            <div class="card-body">
+              <h3 class="card-title">Login</h3>
+              <form id="login-form">
+                <div class="mb-3">
+                  <label for="email" class="form-label">Email address</label>
+                  <input type="email" class="form-control" id="email" aria-describedby="emailHelp" required />
+                  <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+                </div>
+                <div class="mb-3">
+                  <label for="password" class="form-label">Password</label>
+                  <input type="password" class="form-control" id="password" required />
+                </div>
+                <button type="submit" class="btn btn-primary">Login</button>
+                <button type="button" class="btn btn-secondary" id="reg-btn">Register</button>
+                <p class="mt-2">or login with</p>
+                <div class="g-signin2" data-onsuccess="onSignIn"></div>
+                <!-- <fb:login-button scope="public_profile,email" onlogin="checkLoginState();"> </fb:login-button> -->
+              </form>
+              <!-- </div> -->
+            </div>
           </div>
         </div>
       </div>
     </div>
 
     <!-- register form -->
-    <div class="container mt-5" id="reg-container">
+    <div class="container position-absolute top-50 start-50 translate-middle" id="reg-container">
       <div class="col-4 m-auto">
         <div class="alert alert-danger text-center" id="reg-alert" role="alert"></div>
-        <div class="card shadow p-3 mb-5 bg-body rounded">
+        <div class="card p-3 bg-light rounded">
           <div class="card-body">
             <h3 class="card-title">Register</h3>
             <form id="reg-form">
@@ -61,6 +72,7 @@
               <div class="mb-3">
                 <label for="new-password" class="form-label">Password</label>
                 <input type="password" class="form-control" id="new-password" minlength="6" required />
+                <span id="passwordHelpInline" class="form-text"> Must be 6-20 characters long. </span>
               </div>
               <button type="Submit" class="btn btn-primary">Register</button>
               <button type="button" class="btn btn-dark" id="cancel-btn">Cancel</button>
@@ -149,6 +161,32 @@
       crossorigin="anonymous"
     ></script>
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
+
+    <!-- <script>
+      window.fbAsyncInit = function () {
+        FB.init({
+          appId: '196511065673405',
+          cookie: true,
+          xfbml: true,
+          version: 'v10.0',
+        });
+
+        FB.AppEvents.logPageView();
+      };
+
+      (function (d, s, id) {
+        var js,
+          fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) {
+          return;
+        }
+        js = d.createElement(s);
+        js.id = id;
+        js.src = 'https://connect.facebook.net/en_US/sdk.js';
+        fjs.parentNode.insertBefore(js, fjs);
+      })(document, 'script', 'facebook-jssdk');
+    </script> -->
     <script src="script.js"></script>
   </body>
 </html>
