@@ -22,17 +22,20 @@
     <!-- login form -->
     <div class="container mt-5" id="login-container">
       <div class="col-4 m-auto">
+        <div class="alert alert-success text-center" id="success-alert" role="alert"></div>
+        <div class="alert alert-danger text-center" id="error-alert" role="alert"></div>
         <div class="card shadow p-3 mb-5 bg-body rounded">
           <div class="card-body">
+            <h3 class="card-title">Login</h3>
             <form id="login-form">
               <div class="mb-3">
                 <label for="email" class="form-label">Email address</label>
-                <input type="email" class="form-control" id="email" aria-describedby="emailHelp" />
+                <input type="email" class="form-control" id="email" aria-describedby="emailHelp" required />
                 <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
               </div>
               <div class="mb-3">
                 <label for="password" class="form-label">Password</label>
-                <input type="password" class="form-control" id="password" />
+                <input type="password" class="form-control" id="password" required />
               </div>
               <button type="submit" class="btn btn-primary">Login</button>
               <button type="button" class="btn btn-secondary" id="reg-btn">Register</button>
@@ -45,17 +48,19 @@
     <!-- register form -->
     <div class="container mt-5" id="reg-container">
       <div class="col-4 m-auto">
+        <div class="alert alert-danger text-center" id="reg-alert" role="alert"></div>
         <div class="card shadow p-3 mb-5 bg-body rounded">
           <div class="card-body">
+            <h3 class="card-title">Register</h3>
             <form id="reg-form">
               <div class="mb-3">
                 <label for="new-email" class="form-label">Email address</label>
-                <input type="email" class="form-control" id="new-email" aria-describedby="emailHelp" />
+                <input type="email" class="form-control" id="new-email" aria-describedby="emailHelp" required />
                 <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
               </div>
               <div class="mb-3">
                 <label for="new-password" class="form-label">Password</label>
-                <input type="password" class="form-control" id="new-password" />
+                <input type="password" class="form-control" id="new-password" minlength="6" required />
               </div>
               <button type="Submit" class="btn btn-primary">Register</button>
               <button type="button" class="btn btn-dark" id="cancel-btn">Cancel</button>
@@ -68,8 +73,13 @@
     <!-- add todo form -->
     <div class="container mt-5" id="add-container">
       <div class="col-4 m-auto">
+        <div class="alert alert-danger text-center" id="add-alert" role="alert"></div>
+        <!-- don't have any todo -->
+        <div class="alert alert-secondary text-center" role="alert" id="no-todo">You don't have any todo yet. Let's make some!</div>
+
         <div class="card shadow p-3 mb-5 bg-body rounded">
           <div class="card-body">
+            <h3 class="card-title">Add Todo</h3>
             <form id="add-form">
               <div class="mb-3">
                 <label for="title" class="form-label">Title</label>
@@ -83,7 +93,7 @@
                 <label for="due_date" class="form-label">Due Date</label>
                 <input type="date" class="form-control" id="due_date" />
               </div>
-              <button type="Submit" class="btn btn-primary">Submit</button>
+              <button type="Submit" class="btn btn-primary">Add</button>
               <button type="button" class="btn btn-dark" id="cancel-add-btn">Cancel</button>
             </form>
           </div>
@@ -94,8 +104,10 @@
     <!-- edit todo form -->
     <div class="container mt-5" id="edit-container">
       <div class="col-4 m-auto">
+        <div class="alert alert-danger text-center" id="edit-alert" role="alert"></div>
         <div class="card shadow p-3 mb-5 bg-body rounded">
           <div class="card-body">
+            <h3 class="card-title">Edit Todo</h3>
             <form id="edit-form">
               <div class="mb-3">
                 <label for="title-edit" class="form-label">Title</label>
@@ -120,9 +132,11 @@
     <!-- todos page -->
     <div class="container mt-5" id="todos-container">
       <div class="col-8 m-auto">
+        <div class="alert alert-success text-center" id="todo-alert" role="alert"></div>
         <div class="card shadow p-3 mb-5 bg-body rounded">
           <div class="card-body">
             <button type="button" class="btn btn-success mb-2" id="add-btn">Add Todo</button>
+            <button type="button" class="btn btn-secondary mb-2" id="download-btn">Download Todo(s)</button>
             <div class="list-group" id="todos"></div>
           </div>
         </div>
@@ -134,6 +148,7 @@
       integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
       crossorigin="anonymous"
     ></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <script src="script.js"></script>
   </body>
 </html>
