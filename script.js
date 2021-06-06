@@ -34,7 +34,7 @@ $(document).ready(function () {
     $('#login-form')[0].reset();
   });
 
-  $('#add-btn').click(function (e) {
+  $('.add-btn').click(function (e) {
     e.preventDefault();
     $('#add-container').show();
     $('#due_date').attr('min', new Date().toISOString().split('T')[0]);
@@ -42,9 +42,10 @@ $(document).ready(function () {
     $('#add-alert').hide();
   });
 
-  $('#cancel-add-btn').click(function (e) {
+  $('.cancel-btn').click(function (e) {
     e.preventDefault();
     $('#add-container').hide();
+    $('#edit-container').hide();
   });
 
   $('#add-form').submit(function (e) {
@@ -69,10 +70,10 @@ $(document).ready(function () {
     editTodo(id);
   });
 
-  $('#cancel-edit-btn').click(function (e) {
-    e.preventDefault();
-    $('#edit-container').hide();
-  });
+  // $('#cancel-edit-btn').click(function (e) {
+  //   e.preventDefault();
+  //   $('#edit-container').hide();
+  // });
 
   $('#todos').on('click', '.delete-btn', function (e) {
     e.preventDefault();
@@ -98,6 +99,11 @@ $(document).ready(function () {
   $('#download-btn').click(function (e) {
     e.preventDefault();
     download();
+  });
+
+  $('#home-btn').click(function (e) {
+    e.preventDefault();
+    auth();
   });
 });
 
@@ -137,6 +143,7 @@ function auth() {
     $('#logout').show();
     $('#add-container').hide();
     $('#edit-container').hide();
+    $('#navbar').show();
 
     getTodos();
   } else {
@@ -148,6 +155,7 @@ function auth() {
     $('#add-container').hide();
     $('#edit-container').hide();
     $('#logout').hide();
+    $('#navbar').hide();
   }
 
   // FB.getLoginStatus(function (response) {
