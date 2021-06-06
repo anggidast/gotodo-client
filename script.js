@@ -70,11 +70,6 @@ $(document).ready(function () {
     editTodo(id);
   });
 
-  // $('#cancel-edit-btn').click(function (e) {
-  //   e.preventDefault();
-  //   $('#edit-container').hide();
-  // });
-
   $('#todos').on('click', '.delete-btn', function (e) {
     e.preventDefault();
     const id = $(this).data().id;
@@ -84,15 +79,10 @@ $(document).ready(function () {
 
   $('#todos').on('change', '.checkbox :checkbox', function () {
     const id = $(this).data().id;
-    const title = $(this).data().title;
     if (this.checked) {
       statusChange(id, 'done');
-      // $('#todo-alert')
-      //   .show()
-      //   .text(title + ' is done');
     } else {
       statusChange(id, 'undone');
-      // $('#todo-alert').hide();
     }
   });
 
@@ -105,33 +95,13 @@ $(document).ready(function () {
     e.preventDefault();
     auth();
   });
-});
 
-function download() {
-  $.ajax({
-    type: 'GET',
-    url: baseURL + '/todos/export',
-    headers: {
-      access_token: localStorage.getItem('access_token'),
-    },
-    xhrFields: {
-      responseType: 'blob',
-    },
-    success: function (response, status, xhr) {
-      var a = document.createElement('a');
-      var url = window.URL.createObjectURL(response);
-      a.href = url;
-      a.download = 'todo.xlsx';
-      a.click();
-      window.URL.revokeObjectURL(url);
-    },
+  $('#city-search').submit(function (e) {
+    e.preventDefault();
+    const city = $('#city').val();
+    searchCity(city);
   });
-  // .done((res) => {
-  //   auth();
-  //   console.log(res, 'done');
-  // })
-  // .fail((err) => console.log(err, 'err'));
-}
+});
 
 function auth() {
   if (localStorage.getItem('access_token')) {
@@ -144,7 +114,9 @@ function auth() {
     $('#add-container').hide();
     $('#edit-container').hide();
     $('#navbar').show();
+    $('#weather-container').show();
 
+    searchCity('Jakarta');
     getTodos();
   } else {
     $('#login-container').show();
@@ -156,19 +128,9 @@ function auth() {
     $('#edit-container').hide();
     $('#logout').hide();
     $('#navbar').hide();
+    $('#weather-container').hide();
   }
-
-  // FB.getLoginStatus(function (response) {
-  //   statusChangeCallback(response);
-  // });
 }
-
-// function checkLoginState() {
-//   FB.getLoginStatus(function (response) {
-//     console.log(response);
-//     statusChangeCallback(response);
-//   });
-// }
 
 function onSignIn(googleUser) {
   const id_token = googleUser.getAuthResponse().id_token;
@@ -244,7 +206,8 @@ function getTodos() {
         $('#due_date').attr('min', new Date().toISOString().split('T')[0]);
         $('#add-alert').hide();
         $('#no-todo').show();
-        $('#cancel-add-btn').hide();
+        $('#add-form')[0].reset();
+        $('.cancel-btn').hide();
       }
       $('#todos').empty();
       data.forEach((el) => {
@@ -396,4 +359,27 @@ function statusChange(id, status) {
     .fail((err) => {
       console.log(err);
     });
+}
+
+function searchCity(city) {
+  $.ajax({
+    type: 'GET',
+    url: `http://dataservice.accuweather.com/locations/v1/cities/search?apikey=wVoG6Um0IAAWs4G7DdbXUleqC5dx1EgM&q=${city}`,
+  }).done((data) => {
+    const id = data[0].Key || data.Key;
+    const cityName = data[0].LocalizedName || data.LocalizedName;
+    weather(id, cityName);
+  });
+}
+
+function weather(id, city) {
+  $.ajax({
+    type: 'GET',
+    url: `http://dataservice.accuweather.com/currentconditions/v1/${id}?apikey=wVoG6Um0IAAWs4G7DdbXUleqC5dx1EgM`,
+  }).done((data) => {
+    $('#city-search')[0].reset();
+    const condition = data[0].WeatherText;
+    const temp = data[0].Temperature.Metric.Value;
+    $('#weather').text(city + ': ' + condition + ', ' + temp + String.fromCharCode(176) + 'C');
+  });
 }
