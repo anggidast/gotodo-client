@@ -1,4 +1,4 @@
-const baseURL = 'http://localhost:3000';
+const baseURL = 'https://fancy-todo-dast.herokuapp.com';
 
 $(document).ready(function () {
   auth();
@@ -13,6 +13,7 @@ $(document).ready(function () {
     $('#login-container').hide();
     $('#reg-alert').hide();
     $('#reg-container').show();
+    $('#reg-form')[0].reset();
   });
 
   $('#cancel-btn').click(function (e) {
@@ -37,9 +38,11 @@ $(document).ready(function () {
   $('.add-btn').click(function (e) {
     e.preventDefault();
     $('#add-container').show();
+    $('#add-form')[0].reset();
     $('#due_date').attr('min', new Date().toISOString().split('T')[0]);
     $('#todo-alert').hide();
     $('#add-alert').hide();
+    $('.cancel-btn').show();
   });
 
   $('.cancel-btn').click(function (e) {
@@ -58,6 +61,7 @@ $(document).ready(function () {
     const id = $(this).data().id;
     showEditTodo(id);
     $('#edit-container').show();
+    $('.cancel-btn').show();
     $('#edit-alert').hide();
     $('#due_date-edit').attr('min', new Date().toISOString().split('T')[0]);
     $(window).scrollTop(0);
@@ -79,10 +83,15 @@ $(document).ready(function () {
 
   $('#todos').on('change', '.checkbox :checkbox', function () {
     const id = $(this).data().id;
+    const title = $(this).data().title;
     if (this.checked) {
       statusChange(id, 'done');
+      // $('#todo-alert')
+      //   .show()
+      //   .text(title + ' is done');
     } else {
       statusChange(id, 'undone');
+      // $('#todo-alert').hide();
     }
   });
 
@@ -120,6 +129,7 @@ function auth() {
     getTodos();
   } else {
     $('#login-container').show();
+    $('#login-form')[0].reset();
     $('#success-alert').hide();
     $('#error-alert').hide();
     $('#reg-container').hide();
@@ -130,7 +140,18 @@ function auth() {
     $('#navbar').hide();
     $('#weather-container').hide();
   }
+
+  // FB.getLoginStatus(function (response) {
+  //   statusChangeCallback(response);
+  // });
 }
+
+// function checkLoginState() {
+//   FB.getLoginStatus(function (response) {
+//     console.log(response);
+//     statusChangeCallback(response);
+//   });
+// }
 
 function onSignIn(googleUser) {
   const id_token = googleUser.getAuthResponse().id_token;
@@ -170,6 +191,7 @@ function login() {
     })
     .fail((err) => {
       $('#error-alert').show().text(err.responseJSON.message);
+      $('#success-alert').hide();
     });
 }
 
@@ -214,6 +236,7 @@ function getTodos() {
         const status = el.status == 'done' ? 'checked' : '';
         const grey = el.status == 'done' ? 'bg-secondary' : '';
         const white = el.status == 'done' ? 'text-white' : '';
+        const due = dayCount(new Date(el.due_date), new Date());
         $('#todos').append(
           `<div class="list-group-item ${grey}">
             <form class="checkbox">
@@ -222,12 +245,14 @@ function getTodos() {
             </form>
               <div class="d-flex w-100 justify-content-between">
                 <h5 class="mb-1 ${white}">${el.title}</h5>
-                <small class="text-muted">${dayCount(new Date(el.due_date), new Date())} day(s) left</small>
+                <small class="text-muted">${due >= 0 ? due + ' day(s) left' : 'expired!'}</small>
               </div>
               <p class="mb-1 ${white}">${el.description}</p>
               <small class="${white}">Due date: ${new Date(el.due_date).toISOString().split`T`[0]}</small><br />
-              <button type="button" class="btn btn-sm btn-primary edit-btn" data-id="${el.id}">Edit</button>
-              <button type="button" class="btn btn-sm btn-danger delete-btn" data-id="${el.id}" data-title="${el.title}">Delete</button>
+              <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                <button type="button" class="btn btn-sm btn-danger delete-btn" data-id="${el.id}" data-title="${el.title}">Delete</button>
+                <button type="button" class="btn btn-sm btn-primary edit-btn" data-id="${el.id}">Edit</button>
+              </div>
           </div>`
         );
       });
@@ -239,7 +264,7 @@ function getTodos() {
 
 function dayCount(due_date, today) {
   const oneDay = 24 * 60 * 60 * 1000;
-  return Math.round(Math.abs((due_date - today) / oneDay));
+  return Math.round((due_date - today) / oneDay);
 }
 
 function addTodo() {
@@ -359,6 +384,32 @@ function statusChange(id, status) {
     .fail((err) => {
       console.log(err);
     });
+}
+
+function download() {
+  $.ajax({
+    type: 'GET',
+    url: baseURL + '/todos/export',
+    headers: {
+      access_token: localStorage.getItem('access_token'),
+    },
+    xhrFields: {
+      responseType: 'blob',
+    },
+    success: function (response, status, xhr) {
+      var a = document.createElement('a');
+      var url = window.URL.createObjectURL(response);
+      a.href = url;
+      a.download = 'todo.xlsx';
+      a.click();
+      window.URL.revokeObjectURL(url);
+    },
+  });
+  // .done((res) => {
+  //   auth();
+  //   console.log(res, 'done');
+  // })
+  // .fail((err) => console.log(err, 'err'));
 }
 
 function searchCity(city) {

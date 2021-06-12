@@ -43,6 +43,7 @@
                   <button type="button" class="btn btn-secondary" id="reg-btn">Register</button>
                   <p class="mt-2 text-muted">or login with</p>
                   <div class="g-signin2" data-longtitle="true" data-onsuccess="onSignIn"></div>
+                  <!-- <fb:login-button scope="public_profile,email" onlogin="checkLoginState();"> </fb:login-button> -->
                 </form>
               </div>
             </div>
@@ -78,7 +79,7 @@
     </div>
 
     <!-- navbar -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark bg-gradient border-bottom" id="navbar">
+    <nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-dark bg-gradient border-bottom" id="navbar">
       <div class="container-fluid">
         <a class="navbar-brand" id="home-btn" href="#">Fancy Todo</a>
         <button
@@ -98,13 +99,13 @@
               <a class="nav-link add-btn" href="#">Add Todo</a>
             </li>
           </ul>
-          <button class="btn btn-outline-warning" id="logout-btn" type="button">Log Out</button>
+          <button class="btn btn-outline-danger" id="logout-btn" type="button">Log Out</button>
         </div>
       </div>
     </nav>
 
     <!-- weather search -->
-    <div class="container mt-4" id="weather-container">
+    <div class="container mt-4 pt-5" id="weather-container">
       <div class="col-4 m-auto text-center text-light">
         <p class="">Wanna go out? Check your city's weather!</p>
         <form class="d-flex" id="city-search">
@@ -181,6 +182,7 @@
         <div class="card shadow p-3 mb-5 bg-body rounded">
           <div class="card-body">
             <button type="button" class="btn btn-success mb-2 add-btn">Add Todo</button>
+            <button type="button" class="btn btn-secondary mb-2" id="download-btn">Download Todo(s)</button>
             <div class="list-group" id="todos"></div>
           </div>
         </div>
@@ -194,6 +196,31 @@
     ></script>
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <script src="https://apis.google.com/js/platform.js" async defer></script>
+
+    <!-- <script>
+      window.fbAsyncInit = function () {
+        FB.init({
+          appId: '196511065673405',
+          cookie: true,
+          xfbml: true,
+          version: 'v10.0',
+        });
+
+        FB.AppEvents.logPageView();
+      };
+
+      (function (d, s, id) {
+        var js,
+          fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) {
+          return;
+        }
+        js = d.createElement(s);
+        js.id = id;
+        js.src = 'https://connect.facebook.net/en_US/sdk.js';
+        fjs.parentNode.insertBefore(js, fjs);
+      })(document, 'script', 'facebook-jssdk');
+    </script> -->
     <script src="script.js"></script>
   </body>
 </html>
