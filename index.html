@@ -12,40 +12,33 @@
     />
     <title>Fancy Todo</title>
   </head>
-  <body class="bg-dark">
+  <body class="bg-light">
     <!-- login form -->
     <div class="container position-absolute top-50 start-50 translate-middle" id="login-container">
-      <div class="col-8 m-auto">
+      <div class="col-4 m-auto">
         <div class="alert alert-success text-center" id="success-alert" role="alert"></div>
         <div class="alert alert-danger text-center" id="error-alert" role="alert"></div>
-        <div class="card bg-light rounded">
-          <div class="row g-0">
-            <div class="col-md-6 position-relative bg-dark rounded">
-              <img src="./img/login.jpg" class="card-img rounded" style="filter: opacity(60%); border-radius: 25px" alt="..." />
-              <span style="position: absolute; width: 100%; top: 70%; left: 50%; transform: translate(-50%, -50%); font-size: 50px; color: white"
-                >Fancy Todo</span
-              >
-            </div>
-            <div class="col-md-6 m-auto">
+        <div class="card shadow p-3 bg-white rounded">
               <div class="card-body">
                 <h3 class="card-title">Login</h3>
                 <form id="login-form">
                   <div class="mb-3">
                     <label for="email" class="form-label">Email address</label>
                     <input type="email" class="form-control" id="email" aria-describedby="emailHelp" required />
-                    <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+                    <div class="form-text">demo email: demo@user.com</div>
+                    <!-- <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div> -->
                   </div>
                   <div class="mb-3">
                     <label for="password" class="form-label">Password</label>
                     <input type="password" class="form-control" id="password" required />
+                    <div class="form-text">demo password: demouser</div>
                   </div>
                   <button type="submit" class="btn btn-primary">Login</button>
                   <button type="button" class="btn btn-secondary" id="reg-btn">Register</button>
-                  <p class="mt-2 text-muted">or login with</p>
-                  <div class="g-signin2" data-longtitle="true" data-onsuccess="onSignIn"></div>
+                  <!-- <p class="mt-2 text-muted">or login with</p>
+                  <div class="g-signin2" data-longtitle="true" data-onsuccess="onSignIn"></div> -->
                   <!-- <fb:login-button scope="public_profile,email" onlogin="checkLoginState();"> </fb:login-button> -->
                 </form>
-              </div>
             </div>
           </div>
         </div>
@@ -56,7 +49,7 @@
     <div class="container position-absolute top-50 start-50 translate-middle" id="reg-container">
       <div class="col-4 m-auto">
         <div class="alert alert-danger text-center" id="reg-alert" role="alert"></div>
-        <div class="card p-3 bg-light rounded">
+        <div class="card shadow p-3 bg-white rounded">
           <div class="card-body">
             <h3 class="card-title">Register</h3>
             <form id="reg-form">
@@ -79,7 +72,7 @@
     </div>
 
     <!-- navbar -->
-    <nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-dark bg-gradient border-bottom" id="navbar">
+    <nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-dark border-bottom" id="navbar">
       <div class="container-fluid">
         <a class="navbar-brand" id="home-btn" href="#">Fancy Todo</a>
         <button
@@ -99,7 +92,7 @@
               <a class="nav-link add-btn" href="#">Add Todo</a>
             </li>
           </ul>
-          <button class="btn btn-outline-danger" id="logout-btn" type="button">Log Out</button>
+          <button class="btn btn-sm btn-danger" id="logout-btn" type="button">Log Out</button>
         </div>
       </div>
     </nav>
@@ -107,12 +100,12 @@
     <!-- weather search -->
     <div class="container mt-4 pt-5" id="weather-container">
       <div class="col-4 m-auto text-center text-light">
-        <p class="">Wanna go out? Check your city's weather!</p>
+        <p class="text-dark">Wanna go out? Check your city's weather!</p>
         <form class="d-flex" id="city-search">
-          <input id="city" class="form-control me-2" type="search" placeholder="Search city weather" aria-label="Search" />
+          <input id="city" class="form-control me-2" type="search" placeholder="Search city" aria-label="Search" />
           <button class="btn btn-outline-success" type="submit">Search</button>
         </form>
-        <div class="mt-3" id="weather">--</div>
+        <div class="mt-3 text-dark" id="weather">--</div>
       </div>
     </div>
 
@@ -182,7 +175,7 @@
         <div class="card shadow p-3 mb-5 bg-body rounded">
           <div class="card-body">
             <button type="button" class="btn btn-success mb-2 add-btn">Add Todo</button>
-            <button type="button" class="btn btn-secondary mb-2" id="download-btn">Download Todo(s)</button>
+            <!-- <button type="button" class="btn btn-secondary mb-2" id="download-btn">Download Todo(s)</button> -->
             <div class="list-group" id="todos"></div>
           </div>
         </div>

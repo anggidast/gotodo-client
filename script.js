@@ -1,4 +1,5 @@
-const baseURL = 'https://fancy-todo-dast.herokuapp.com';
+const baseURL = 'https://gotodo-api.herokuapp.com';
+// const baseURL = 'http://localhost:34547';
 
 $(document).ready(function () {
   auth();
@@ -30,7 +31,7 @@ $(document).ready(function () {
   $('#logout-btn').click(function (e) {
     e.preventDefault();
     localStorage.removeItem('access_token');
-    signOut();
+    // signOut();
     auth();
     $('#login-form')[0].reset();
   });
@@ -81,17 +82,14 @@ $(document).ready(function () {
     deleteTodo(id, title);
   });
 
-  $('#todos').on('change', '.checkbox :checkbox', function () {
+  $('#todos').on('click', '.status-btn', function (e) {
+    e.preventDefault();
     const id = $(this).data().id;
-    const title = $(this).data().title;
-    if (this.checked) {
+    const status = $(this).data().status;
+    if (status == 'undone') {
       statusChange(id, 'done');
-      // $('#todo-alert')
-      //   .show()
-      //   .text(title + ' is done');
     } else {
       statusChange(id, 'undone');
-      // $('#todo-alert').hide();
     }
   });
 
@@ -177,13 +175,19 @@ function signOut() {
 }
 
 function login() {
+  const data = {
+    email: $('#email').val(),
+    password: $('#password').val(),
+  };
+
   $.ajax({
     type: 'POST',
     url: baseURL + '/users/login',
-    data: {
-      email: $('#email').val(),
-      password: $('#password').val(),
+    headers: {
+      'Access-Control-Allow-Origin': 'x-requested-with',
+      'Content-Type': 'application/json',
     },
+    data: JSON.stringify(data),
   })
     .done((res) => {
       localStorage.setItem('access_token', res.access_token);
@@ -196,13 +200,19 @@ function login() {
 }
 
 function register() {
+  const data = {
+    email: $('#new-email').val(),
+    password: $('#new-password').val(),
+  };
+
   $.ajax({
     type: 'POST',
     url: baseURL + '/users/register',
-    data: {
-      email: $('#new-email').val(),
-      password: $('#new-password').val(),
+    headers: {
+      'Access-Control-Allow-Origin': 'x-requested-with',
+      'Content-Type': 'application/json',
     },
+    data: JSON.stringify(data),
   })
     .done((res) => {
       auth();
@@ -218,14 +228,17 @@ function getTodos() {
     type: 'GET',
     url: baseURL + '/todos',
     headers: {
-      access_token: localStorage.getItem('access_token'),
+      'Access-Control-Allow-Origin': 'x-requested-with',
+      access_token: `Bearer ${localStorage.getItem('access_token')}`,
     },
   })
     .done(({ data }) => {
       if (data.length == 0) {
+        const oneDay = 24 * 60 * 60 * 1000;
+        const due_date = `${Math.round(new Date() + oneDay)}`;
         $('#todos-container').hide();
         $('#add-container').show();
-        $('#due_date').attr('min', new Date().toISOString().split('T')[0]);
+        $('#due_date').attr('min', due_date);
         $('#add-alert').hide();
         $('#no-todo').show();
         $('#add-form')[0].reset();
@@ -233,25 +246,28 @@ function getTodos() {
       }
       $('#todos').empty();
       data.forEach((el) => {
-        const status = el.status == 'done' ? 'checked' : '';
-        const grey = el.status == 'done' ? 'bg-secondary' : '';
-        const white = el.status == 'done' ? 'text-white' : '';
+        const due_date = `${el.due_date}`;
+        const statusButton = el.status == 'done' ? 'Undone' : 'Done';
+        const done = el.status == 'done' ? 'text-black-50' : '';
         const due = dayCount(new Date(el.due_date), new Date());
         $('#todos').append(
-          `<div class="list-group-item ${grey}">
-            <form class="checkbox">
-              <input data-id="${el.id}" data-title="${el.title}" class="form-check-input me-1" type="checkbox" ${status} value="" />
-              <label class="${white}">${el.status}</label>
-            </form>
-              <div class="d-flex w-100 justify-content-between">
-                <h5 class="mb-1 ${white}">${el.title}</h5>
-                <small class="text-muted">${due >= 0 ? due + ' day(s) left' : 'expired!'}</small>
+          `<div class="list-group-item d-flex justify-content-between">
+              <div class="w-100">
+                <h5 class="mb-1 ${done}">${el.title}</h5>
+                <p class="mb-1 ${done}">${el.description}</p>
+                <small class="${done}">Due date: ${due_date.split`T`[0]}</small><br />
               </div>
-              <p class="mb-1 ${white}">${el.description}</p>
-              <small class="${white}">Due date: ${new Date(el.due_date).toISOString().split`T`[0]}</small><br />
+
+              <div class="d-flex flex-column justify-content-between">
+              <small class="text-muted text-end">${due >= 0 ? due + 1 + ' day(s) left' : 'expired!'}</small>
               <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                <button type="button" class="btn btn-sm btn-success status-btn" data-id="${el.id}" data-status="${el.status}" data-title="${
+            el.title
+          }">${statusButton}</button>
                 <button type="button" class="btn btn-sm btn-danger delete-btn" data-id="${el.id}" data-title="${el.title}">Delete</button>
                 <button type="button" class="btn btn-sm btn-primary edit-btn" data-id="${el.id}">Edit</button>
+                <!-- <button type="button" class="btn btn-sm btn-primary edit-btn" data-id="${el.id}">Edit</button> -->
+              </div>
               </div>
           </div>`
         );
@@ -268,17 +284,21 @@ function dayCount(due_date, today) {
 }
 
 function addTodo() {
+  const data = {
+    title: $('#title').val(),
+    description: $('#description').val(),
+    due_date: $('#due_date').val(),
+  };
+
   $.ajax({
     type: 'POST',
     url: baseURL + '/todos',
     headers: {
-      access_token: localStorage.getItem('access_token'),
+      'Access-Control-Allow-Origin': 'x-requested-with',
+      'Content-Type': 'application/json',
+      access_token: `Bearer ${localStorage.getItem('access_token')}`,
     },
-    data: {
-      title: $('#title').val(),
-      description: $('#description').val(),
-      due_date: $('#due_date').val(),
-    },
+    data: JSON.stringify(data),
   })
     .done((res) => {
       getTodos();
@@ -289,6 +309,7 @@ function addTodo() {
         .text('New todo: "' + res.data.title + '" added successfully');
     })
     .fail((err) => {
+      console.log(err);
       $('#add-alert').show().text(err.responseJSON.message);
     });
 }
@@ -298,13 +319,15 @@ function showEditTodo(id) {
     type: 'GET',
     url: baseURL + '/todos/' + id,
     headers: {
-      access_token: localStorage.getItem('access_token'),
+      'Access-Control-Allow-Origin': 'x-requested-with',
+      access_token: `Bearer ${localStorage.getItem('access_token')}`,
     },
   })
     .done(({ data }) => {
+      const due_date = `${data.due_date}`;
       $('#title-edit').val(data.title);
       $('#description-edit').val(data.description);
-      $('#due_date-edit').val(new Date(data.due_date).toISOString().split`T`[0]);
+      $('#due_date-edit').val(due_date.split`T`[0]);
     })
     .fail((err) => {
       console.log(err);
@@ -312,17 +335,21 @@ function showEditTodo(id) {
 }
 
 function editTodo(id) {
+  const data = {
+    title: $('#title-edit').val(),
+    description: $('#description-edit').val(),
+    due_date: $('#due_date-edit').val(),
+  };
+
   $.ajax({
     type: 'PUT',
     url: baseURL + '/todos/' + id,
     headers: {
-      access_token: localStorage.getItem('access_token'),
+      'Access-Control-Allow-Origin': 'x-requested-with',
+      'Content-Type': 'application/json',
+      access_token: `Bearer ${localStorage.getItem('access_token')}`,
     },
-    data: {
-      title: $('#title-edit').val(),
-      description: $('#description-edit').val(),
-      due_date: $('#due_date-edit').val(),
-    },
+    data: JSON.stringify(data),
   })
     .done((res) => {
       getTodos();
@@ -349,7 +376,8 @@ function deleteTodo(id, title) {
         type: 'DELETE',
         url: baseURL + '/todos/' + id,
         headers: {
-          access_token: localStorage.getItem('access_token'),
+          'Access-Control-Allow-Origin': 'x-requested-with',
+          access_token: `Bearer ${localStorage.getItem('access_token')}`,
         },
       })
         .done((res) => {
@@ -361,24 +389,25 @@ function deleteTodo(id, title) {
         .fail((err) => {
           console.log(err);
         });
-    } else {
-      // swal('Your imaginary file is safe!');
     }
   });
 }
 
 function statusChange(id, status) {
+  const data = {
+    status: status,
+  };
   $.ajax({
     type: 'PATCH',
     url: baseURL + '/todos/' + id,
     headers: {
-      access_token: localStorage.getItem('access_token'),
+      'Access-Control-Allow-Origin': 'x-requested-with',
+      'Content-Type': 'application/json',
+      access_token: `Bearer ${localStorage.getItem('access_token')}`,
     },
-    data: {
-      status,
-    },
+    data: JSON.stringify(data),
   })
-    .done((res) => {
+    .done(() => {
       getTodos();
     })
     .fail((err) => {
@@ -391,7 +420,8 @@ function download() {
     type: 'GET',
     url: baseURL + '/todos/export',
     headers: {
-      access_token: localStorage.getItem('access_token'),
+      'Access-Control-Allow-Origin': 'x-requested-with',
+      access_token: `Bearer ${localStorage.getItem('access_token')}`,
     },
     xhrFields: {
       responseType: 'blob',
