@@ -452,7 +452,7 @@ function download() {
 function searchCity(city) {
   $.ajax({
     type: 'GET',
-    url: `http://dataservice.accuweather.com/locations/v1/cities/search?apikey=wVoG6Um0IAAWs4G7DdbXUleqC5dx1EgM&q=${city}`,
+    url: `https://dataservice.accuweather.com/locations/v1/cities/search?apikey=wVoG6Um0IAAWs4G7DdbXUleqC5dx1EgM&q=${city}`,
     // headers: {
     //   'Access-Control-Allow-Origin': '*',
     //   'Access-Control-Allow-Headers': '*',
@@ -467,7 +467,7 @@ function searchCity(city) {
 function weather(id, city) {
   $.ajax({
     type: 'GET',
-    url: `http://dataservice.accuweather.com/currentconditions/v1/${id}?apikey=wVoG6Um0IAAWs4G7DdbXUleqC5dx1EgM`,
+    url: `https://dataservice.accuweather.com/currentconditions/v1/${id}?apikey=wVoG6Um0IAAWs4G7DdbXUleqC5dx1EgM`,
     // headers: {
     //   'Access-Control-Allow-Origin': '*',
     //   'Access-Control-Allow-Headers': '*',
