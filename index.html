@@ -10,7 +10,7 @@
       integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x"
       crossorigin="anonymous"
     />
-    <title>Fancy Todo</title>
+    <title>Go To-Do</title>
   </head>
   <body class="bg-light">
     <!-- login form -->
@@ -74,7 +74,7 @@
     <!-- navbar -->
     <nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-dark border-bottom" id="navbar">
       <div class="container-fluid">
-        <a class="navbar-brand" id="home-btn" href="#">Fancy Todo</a>
+        <a class="navbar-brand" id="home-btn" href="#">Go To-Do</a>
         <button
           class="navbar-toggler"
           type="button"
@@ -89,7 +89,7 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav me-auto mb-2 mb-lg-0">
             <li class="nav-item">
-              <a class="nav-link add-btn" href="#">Add Todo</a>
+              <a class="nav-link add-btn" href="#">Add To-Do</a>
             </li>
           </ul>
           <button class="btn btn-sm btn-danger" id="logout-btn" type="button">Log Out</button>
@@ -114,11 +114,11 @@
       <div class="col-4 m-auto">
         <div class="alert alert-danger text-center" id="add-alert" role="alert"></div>
         <!-- don't have any todo -->
-        <div class="alert alert-secondary text-center" role="alert" id="no-todo">You don't have any todo yet. Let's make some!</div>
+        <div class="alert alert-secondary text-center" role="alert" id="no-todo">You don't have any to-do yet. Let's make some!</div>
 
         <div class="card shadow p-3 mb-5 bg-body rounded">
           <div class="card-body">
-            <h3 class="card-title">Add Todo</h3>
+            <h3 class="card-title">Add To-Do</h3>
             <form id="add-form">
               <div class="mb-3">
                 <label for="title" class="form-label">Title</label>
@@ -146,7 +146,7 @@
         <div class="alert alert-danger text-center" id="edit-alert" role="alert"></div>
         <div class="card shadow p-3 mb-5 bg-body rounded">
           <div class="card-body">
-            <h3 class="card-title">Edit Todo</h3>
+            <h3 class="card-title">Edit To-Do</h3>
             <form id="edit-form">
               <div class="mb-3">
                 <label for="title-edit" class="form-label">Title</label>
@@ -174,7 +174,7 @@
         <div class="alert alert-success text-center" id="todo-alert" role="alert"></div>
         <div class="card shadow p-3 mb-5 bg-body rounded">
           <div class="card-body">
-            <button type="button" class="btn btn-success mb-2 add-btn">Add Todo</button>
+            <button type="button" class="btn btn-success mb-2 add-btn">Add To-Do</button>
             <!-- <button type="button" class="btn btn-secondary mb-2" id="download-btn">Download Todo(s)</button> -->
             <div class="list-group" id="todos"></div>
           </div>

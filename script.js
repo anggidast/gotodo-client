@@ -306,7 +306,7 @@ function addTodo() {
       $('#todos-container').show();
       $('#todo-alert')
         .show()
-        .text('New todo: "' + res.data.title + '" added successfully');
+        .text('New to-do: "' + res.data.title + '" added successfully');
     })
     .fail((err) => {
       console.log(err);
@@ -356,7 +356,7 @@ function editTodo(id) {
       $('#edit-container').hide();
       $('#todo-alert')
         .show()
-        .text('Todo: "' + res.data.title + '" updated successfully');
+        .text('To-do: "' + res.data.title + '" updated successfully');
     })
     .fail((err) => {
       $('#edit-alert').show().text(err.responseJSON.message);
@@ -365,8 +365,8 @@ function editTodo(id) {
 
 function deleteTodo(id, title) {
   swal({
-    title: `Are you sure you want to delete "${title}" from todo?`,
-    text: 'Once deleted, you will not be able to recover this todo!',
+    title: `Are you sure you want to delete "${title}" from to-do?`,
+    text: 'Once deleted, you will not be able to recover this to-do!',
     icon: 'warning',
     buttons: true,
     dangerMode: true,
