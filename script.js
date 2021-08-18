@@ -185,6 +185,7 @@ function login() {
     url: baseURL + '/users/login',
     headers: {
       'Access-Control-Allow-Origin': 'x-requested-with',
+      // 'Content-Type': 'application/x-www-form-urlencoded',
       'Content-Type': 'application/json',
     },
     data: JSON.stringify(data),
@@ -210,6 +211,7 @@ function register() {
     url: baseURL + '/users/register',
     headers: {
       'Access-Control-Allow-Origin': 'x-requested-with',
+      // 'Content-Type': 'application/x-www-form-urlencoded',
       'Content-Type': 'application/json',
     },
     data: JSON.stringify(data),
@@ -229,16 +231,17 @@ function getTodos() {
     url: baseURL + '/todos',
     headers: {
       'Access-Control-Allow-Origin': 'x-requested-with',
+      // 'Content-Type': 'application/x-www-form-urlencoded',
       access_token: `Bearer ${localStorage.getItem('access_token')}`,
     },
   })
     .done(({ data }) => {
       if (data.length == 0) {
-        const oneDay = 24 * 60 * 60 * 1000;
-        const due_date = `${Math.round(new Date() + oneDay)}`;
+        // const oneDay = 24 * 60 * 60 * 1000;
+        // const due_date = `${Math.round(new Date() + oneDay)}`;
         $('#todos-container').hide();
         $('#add-container').show();
-        $('#due_date').attr('min', due_date);
+        $('#due_date').attr('min', new Date().toISOString().split('T')[0]);
         $('#add-alert').hide();
         $('#no-todo').show();
         $('#add-form')[0].reset();
@@ -295,6 +298,7 @@ function addTodo() {
     url: baseURL + '/todos',
     headers: {
       'Access-Control-Allow-Origin': 'x-requested-with',
+      // 'Content-Type': 'application/x-www-form-urlencoded',
       'Content-Type': 'application/json',
       access_token: `Bearer ${localStorage.getItem('access_token')}`,
     },
@@ -320,6 +324,7 @@ function showEditTodo(id) {
     url: baseURL + '/todos/' + id,
     headers: {
       'Access-Control-Allow-Origin': 'x-requested-with',
+      // 'Content-Type': 'application/x-www-form-urlencoded',
       access_token: `Bearer ${localStorage.getItem('access_token')}`,
     },
   })
@@ -346,6 +351,7 @@ function editTodo(id) {
     url: baseURL + '/todos/' + id,
     headers: {
       'Access-Control-Allow-Origin': 'x-requested-with',
+      // 'Content-Type': 'application/x-www-form-urlencoded',
       'Content-Type': 'application/json',
       access_token: `Bearer ${localStorage.getItem('access_token')}`,
     },
@@ -377,6 +383,7 @@ function deleteTodo(id, title) {
         url: baseURL + '/todos/' + id,
         headers: {
           'Access-Control-Allow-Origin': 'x-requested-with',
+          // 'Content-Type': 'application/x-www-form-urlencoded',
           access_token: `Bearer ${localStorage.getItem('access_token')}`,
         },
       })
@@ -402,6 +409,7 @@ function statusChange(id, status) {
     url: baseURL + '/todos/' + id,
     headers: {
       'Access-Control-Allow-Origin': 'x-requested-with',
+      // 'Content-Type': 'application/x-www-form-urlencoded',
       'Content-Type': 'application/json',
       access_token: `Bearer ${localStorage.getItem('access_token')}`,
     },
@@ -420,7 +428,6 @@ function download() {
     type: 'GET',
     url: baseURL + '/todos/export',
     headers: {
-      'Access-Control-Allow-Origin': 'x-requested-with',
       access_token: `Bearer ${localStorage.getItem('access_token')}`,
     },
     xhrFields: {
@@ -446,6 +453,10 @@ function searchCity(city) {
   $.ajax({
     type: 'GET',
     url: `http://dataservice.accuweather.com/locations/v1/cities/search?apikey=wVoG6Um0IAAWs4G7DdbXUleqC5dx1EgM&q=${city}`,
+    // headers: {
+    //   'Access-Control-Allow-Origin': '*',
+    //   'Access-Control-Allow-Headers': '*',
+    // },
   }).done((data) => {
     const id = data[0].Key || data.Key;
     const cityName = data[0].LocalizedName || data.LocalizedName;
@@ -457,6 +468,10 @@ function weather(id, city) {
   $.ajax({
     type: 'GET',
     url: `http://dataservice.accuweather.com/currentconditions/v1/${id}?apikey=wVoG6Um0IAAWs4G7DdbXUleqC5dx1EgM`,
+    // headers: {
+    //   'Access-Control-Allow-Origin': '*',
+    //   'Access-Control-Allow-Headers': '*',
+    // },
   }).done((data) => {
     $('#city-search')[0].reset();
     const condition = data[0].WeatherText;
