@@ -265,7 +265,7 @@ function getTodos() {
               </div>
 
               <div class="d-flex flex-column justify-content-between">
-              <small class="text-muted text-end">${due >= 0 ? due + 1 + ' day(s) left' : 'expired!'}</small>
+              <small class="text-muted text-end">${due > 0 ? due + 1 + ' day(s) left' : 'expired!'}</small>
               <div class="d-grid gap-2 d-md-flex justify-content-md-end">
                 <button type="button" class="btn btn-sm btn-success status-btn" data-id="${el.id}" data-status="${el.status}" data-title="${
             el.title
