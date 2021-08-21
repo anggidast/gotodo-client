@@ -41,14 +41,20 @@ $(document).ready(function () {
     $('#add-form')[0].reset();
     $('#due_date').attr('min', new Date().toISOString().split('T')[0]);
     $('#todo-alert').hide();
+    $('#no-todo').hide();
+    $('#add-to-do').hide();
+    $('#add-btn').hide();
     $('#add-alert').hide();
     $('.cancel-btn').show();
+    $('#edit-container').hide();
   });
 
   $('.cancel-btn').click(function (e) {
     e.preventDefault();
     $('#add-container').hide();
     $('#edit-container').hide();
+    $('#add-btn').show();
+    $('#add-to-do').show();
   });
 
   $('#add-form').submit(function (e) {
@@ -66,6 +72,9 @@ $(document).ready(function () {
     $('#due_date-edit').attr('min', new Date().toISOString().split('T')[0]);
     $(window).scrollTop(0);
     $('#submit-edit-btn').attr('data-id', id);
+    $('#add-container').hide();
+    $('#add-to-do').show();
+    $('#add-btn').show();
   });
 
   $('#edit-form').submit(function (e) {
@@ -232,13 +241,12 @@ function getTodos() {
   })
     .done(({ data }) => {
       if (data.length == 0) {
-        // const oneDay = 24 * 60 * 60 * 1000;
-        // const due_date = `${Math.round(new Date() + oneDay)}`;
         $('#todos-container').hide();
         $('#add-container').show();
         $('#due_date').attr('min', new Date().toISOString().split('T')[0]);
         $('#add-alert').hide();
         $('#no-todo').show();
+        $('#add-to-do').hide();
         $('#add-form')[0].reset();
         $('.cancel-btn').hide();
       }
